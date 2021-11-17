@@ -13,9 +13,10 @@ RUN \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="arm"; fi \
     && if [ "${BUILD_ARCH}" = "amd64" ]; then ARCH="amd64"; fi \
     \
+    && PORTAINER_VERSION =$(curl -fsSLI -o /dev/null -w %{url_effective} "https://github.com/portainer/portainer/releases/latest"  | tr '/' '\n' | tail -1) \ 
     && curl -L -s \
-        "https://github.com/portainer/portainer/releases/download/1.24.2/portainer-1.24.2-linux-${ARCH}.tar.gz" \
-        | tar zxvf - -C /opt/
+        "https://github.com/portainer/portainer/releases/download/${PORTAINER_VERSION}/portainer-${PORTAINER_VERSION}-linux-${ARCH}.tar.gz" -o portainer-${PORTAINER_VERSION}-linux-${ARCH}.tar.gz \
+       | tar zxvf - -C /opt/
 
 # Copy root filesystem
 COPY rootfs /
